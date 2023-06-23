@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import { UserController } from "./user.controller";
 import { Db } from "mongodb";
+import { authenticateToken } from "../../auth/auth.service";
 
 export class UserModule {
     public userRouter: Router
@@ -13,7 +14,7 @@ export class UserModule {
     }
 
     private generateRoutes(): void {
-        this.userRouter.get("/users", async (req: Request, res: Response) => {
+        this.userRouter.get("/users", authenticateToken, async (req: Request, res: Response) => {
             const allUsers = await this.userController.getAllUsers()
             res.send(allUsers)
         })

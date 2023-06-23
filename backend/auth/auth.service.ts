@@ -5,6 +5,9 @@ import bcrypt from "bcrypt"
 import { UserNotFoundError } from "../errors/userDoesNotExist.error";
 import { InvalidPasswordError } from "../errors/invalidPassword.error";
 import jwt from "jsonwebtoken"
+import { WrongTokenOrMissingError } from "../errors/WrongTokenOrMissing.error";
+import { Request, Response, NextFunction } from "express"
+import { StatusCodes } from "http-status-codes";
 
 export class AuthService {
     private db: Db
@@ -64,3 +67,21 @@ export class AuthService {
         }
     }
 }
+
+// Middleware to be used for authenticating token
+export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
+
+    const token = req.headers.authorization?.split(" ")[1]
+
+    if (!token) {
+        return res.json(new WrongTokenOrMissingError())
+    }
+
+    try {
+        const decodedToken = jwt.verify(token, `${process.env.SECRET}`);
+        req.user = decodedToken
+        next();
+    } catch (error) {
+        return res.json(new WrongTokenOrMissingError())
+    }
+};

@@ -25,6 +25,7 @@ export class ChatroomService {
     }
 
     async updateMemberNumber(roomId: string, increasing: boolean) {
+        // Calling this method only if someone joins or leaves chatroom
         const room = await this.db.collection<Chatroom>("chatrooms").findOne({ roomId })
         var numberOfMembers = room?.totalMembers
         if (numberOfMembers) {
