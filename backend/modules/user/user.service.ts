@@ -43,7 +43,7 @@ export class UserService {
             return new InvalidPasswordError()
         }
 
-        const token = jwt.sign({ username: username }, "secret", {
+        const token = jwt.sign({ username: username }, `${process.env.SECRET}`, {
             expiresIn: "1h"
         })
         return {
