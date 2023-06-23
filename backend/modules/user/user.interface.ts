@@ -3,6 +3,7 @@
 interface User {
     username: string
     password: string
+    chatrooms?: string[] // Chatrooms
 }
 
 export default User

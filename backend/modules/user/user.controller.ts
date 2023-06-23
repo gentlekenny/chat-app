@@ -1,6 +1,5 @@
 import { Db } from "mongodb";
 import { UserService } from "./user.service";
-import User from "./user.interface";
 
 export class UserController {
     private userService: UserService

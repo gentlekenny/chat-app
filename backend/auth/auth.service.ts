@@ -56,7 +56,7 @@ export class AuthService {
         }
 
         // Generating token, keeping it max simple
-        const token = jwt.sign({ username: username }, `${process.env.SECRET}`, {
+        const token = jwt.sign({ username: username, id: dbUser._id }, `${process.env.SECRET}`, {
             expiresIn: "1h"
         })
         return {

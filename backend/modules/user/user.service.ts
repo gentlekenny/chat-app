@@ -1,10 +1,6 @@
 import { Db } from "mongodb";
 import User from "./user.interface";
-import bcrypt from "bcrypt"
-import { InvalidPasswordError } from "../../errors/invalidPassword.error";
-import jwt from "jsonwebtoken"
 import { UserNotFoundError } from "../../errors/userDoesNotExist.error";
-import { UserAlreadyExistsError } from "../../errors/usernameExists.error";
 
 export class UserService {
     private db: Db
@@ -18,5 +14,45 @@ export class UserService {
         return result
     }
 
+    async findUser(id: string) {
+        const user = await this.db.collection<User>("users").findOne({ id })
+        return user;
+    }
+
+    async joinChatroom(userId: string, newChatroom: string) {
+        const user = await this.findUser(userId)
+        if (!user) {
+            return new UserNotFoundError()
+        }
+        // Typescript requieres this assertion
+        const chatrooms = user.chatrooms
+        if (chatrooms) {
+            user.chatrooms = [...chatrooms, newChatroom]
+        }
+
+        const updatedUser = this.updateUser(userId, user)
+        return updatedUser
+    }
+
+    async leaveChatroom(userId: string, deletedChatroom: string) {
+        const user = await this.findUser(userId)
+        if (!user) {
+            return new UserNotFoundError()
+        }
+
+        // Typescript requieres this assertion
+        const chatrooms = user.chatrooms
+        if (chatrooms) {
+            user.chatrooms = chatrooms.filter((room) => room !== deletedChatroom)
+        }
+
+        const updatedUser = this.updateUser(userId, user)
+        return updatedUser
+    }
+
+    async updateUser(userId: string, updatedUser: User) {
+        const updateUser = await this.db.collection("users").findOneAndReplace({ userId }, updatedUser)
+        return updateUser
+    }
 
 }
