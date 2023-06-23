@@ -9,7 +9,10 @@ export class UserService {
     }
 
     async createUser(userDto: User) {
-        const result = await this.db.collection("users").insertOne(userDto)
+        const newUser = {
+            ...userDto, chatRooms: []
+        }
+        const result = await this.db.collection("users").insertOne(newUser)
         return result
     }
 
@@ -17,4 +20,5 @@ export class UserService {
         const result = await this.db.collection("users").find().toArray()
         return result
     }
+
 }
