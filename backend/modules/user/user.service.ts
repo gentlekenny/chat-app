@@ -2,6 +2,7 @@ import { Db } from "mongodb";
 import User from "./user.interface";
 import bcrypt from "bcrypt"
 import { InvalidPasswordError } from "../../errors/invalidPassword.error";
+import jwt from "jsonwebtoken"
 
 export class UserService {
     private db: Db
@@ -41,7 +42,13 @@ export class UserService {
         if (!comparePassword) {
             return new InvalidPasswordError()
         }
-        return dbUser
+
+        const token = jwt.sign({ username: username }, "secret", {
+            expiresIn: "1h"
+        })
+        return {
+            accessToken: token
+        }
     }
 
     async checkIfUsernameExists(username: string) {
