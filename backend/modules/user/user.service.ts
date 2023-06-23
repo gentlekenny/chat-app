@@ -13,6 +13,7 @@ export class UserService {
         this.db = db
     }
 
+
     async createUser(userDto: User) {
 
         const username = userDto.username
@@ -37,10 +38,12 @@ export class UserService {
         return result
     }
 
+
     async getAllUsers() {
-        const result = await this.db.collection<User>("users").find().toArray()
+        const result = await this.db.collection<User>("users").find({}, { projection: { password: 0 } }).toArray()
         return result
     }
+
 
     async login(user: User) {
         const username = user.username
