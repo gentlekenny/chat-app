@@ -7,7 +7,6 @@ import { InvalidPasswordError } from "../errors/invalidPassword.error";
 import jwt from "jsonwebtoken"
 import { WrongTokenOrMissingError } from "../errors/WrongTokenOrMissing.error";
 import { Request, Response, NextFunction } from "express"
-import { StatusCodes } from "http-status-codes";
 
 export class AuthService {
     private db: Db
