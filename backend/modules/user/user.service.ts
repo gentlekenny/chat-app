@@ -1,6 +1,7 @@
 import { Db } from "mongodb";
 import User from "./user.interface";
 import bcrypt from "bcrypt"
+import { InvalidPasswordError } from "../../errors/invalidPassword.error";
 
 export class UserService {
     private db: Db
@@ -38,7 +39,7 @@ export class UserService {
         }
         const comparePassword = await bcrypt.compare(user.password, dbUser.password)
         if (!comparePassword) {
-            throw new Error("Invalid password");
+            return new InvalidPasswordError()
         }
         return dbUser
     }
