@@ -16,4 +16,8 @@ export class UserController {
     async getAllUsers() {
         return await this.userService.getAllUsers()
     }
+
+    async login(user: User) {
+        return await this.userService.login(user)
+    }
 }

@@ -21,5 +21,9 @@ export class UserModule {
             const allUsers = await this.userController.getAllUsers()
             res.send(allUsers)
         })
+        this.userRouter.post("/login", async (req: Request, res: Response) => {
+            const loggedUser = await this.userController.login(req.body)
+            res.send(loggedUser)
+        })
     }
 }
