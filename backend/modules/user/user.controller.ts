@@ -9,15 +9,8 @@ export class UserController {
         this.userService = new UserService(db)
     }
 
-    async createUser(user: User) {
-        return await this.userService.createUser(user)
-    }
-
     async getAllUsers() {
         return await this.userService.getAllUsers()
     }
 
-    async login(user: User) {
-        return await this.userService.login(user)
-    }
 }

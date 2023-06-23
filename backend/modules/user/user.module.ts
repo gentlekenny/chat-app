@@ -13,17 +13,9 @@ export class UserModule {
     }
 
     private generateRoutes(): void {
-        this.userRouter.post("/register", async (req: Request, res: Response) => {
-            const newUser = await this.userController.createUser(req.body)
-            res.send(newUser)
-        })
         this.userRouter.get("/users", async (req: Request, res: Response) => {
             const allUsers = await this.userController.getAllUsers()
             res.send(allUsers)
-        })
-        this.userRouter.post("/login", async (req: Request, res: Response) => {
-            const loggedUser = await this.userController.login(req.body)
-            res.send(loggedUser)
         })
     }
 }
