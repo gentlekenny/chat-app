@@ -1,26 +1,19 @@
 require('dotenv').config();
 
-const { MongoClient } = require('mongodb');
+const { MongoClient, Collection } = require('mongodb');
 
 class DatabaseConnection {
-  static connection;
+  static client;
   // Adding constructor
   constructor() {}
 
   // Adding connectToDatabaseMethod
   static async connectToDatabase() {
     const uri = process.env.DB;
-    const client = new MongoClient(uri);
+    this.client = new MongoClient(uri, { monitorCommands: true });
+    const collection = this.client.db('chatapp').collection('kolekcija');
 
-    if (!DatabaseConnection.connection) {
-      try {
-        // Connect to the MongoDB cluster
-        DatabaseConnection.connection = await client.connect();
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    return this.connection;
+    return this.client;
   }
 }
 
