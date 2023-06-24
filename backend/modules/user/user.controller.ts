@@ -33,4 +33,9 @@ export class UserController {
         return response
     }
 
+    async getAllChatrooms() {
+        const chatrooms = await this.chatroomService.getAllChatrooms()
+        return chatrooms
+    }
+
 }

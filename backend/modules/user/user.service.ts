@@ -1,4 +1,4 @@
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 import User from "./user.interface";
 import { UserNotFoundError } from "../../errors/userDoesNotExist.error";
 
@@ -15,7 +15,7 @@ export class UserService {
     }
 
     async findUser(id: string) {
-        const user = await this.db.collection<User>("users").findOne({ id })
+        const user = await this.db.collection<User>("users").findOne({ _id: new ObjectId(id) })
         return user;
     }
 
@@ -25,10 +25,9 @@ export class UserService {
             return new UserNotFoundError()
         }
         // Typescript requieres this assertion
-        const chatrooms = user.chatrooms
-        if (chatrooms) {
-            user.chatrooms = [...chatrooms, newChatroom]
-        }
+        const chatrooms = user.chatRooms!
+        user.chatRooms = [...chatrooms, newChatroom]
+
 
         const updatedUser = this.updateUser(userId, user)
         return updatedUser
@@ -41,9 +40,9 @@ export class UserService {
         }
 
         // Typescript requieres this assertion
-        const chatrooms = user.chatrooms
+        const chatrooms = user.chatRooms
         if (chatrooms) {
-            user.chatrooms = chatrooms.filter((room) => room !== deletedChatroom)
+            user.chatRooms = chatrooms.filter((room) => room !== deletedChatroom)
         }
 
         const updatedUser = this.updateUser(userId, user)
@@ -51,7 +50,7 @@ export class UserService {
     }
 
     async updateUser(userId: string, updatedUser: User) {
-        const updateUser = await this.db.collection("users").findOneAndReplace({ userId }, updatedUser)
+        const updateUser = (await this.db.collection("users").findOneAndReplace({ _id: new ObjectId(userId) }, updatedUser, { projection: { password: 0 } })).value
         return updateUser
     }
 
