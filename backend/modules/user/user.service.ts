@@ -1,6 +1,7 @@
 import { Db, ObjectId } from "mongodb";
 import User from "./user.interface";
 import { UserNotFoundError } from "../../errors/userDoesNotExist.error";
+import { RedisClient } from "../../redis/client";
 
 export class UserService {
     private db: Db

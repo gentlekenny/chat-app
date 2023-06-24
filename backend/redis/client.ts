@@ -17,9 +17,10 @@ export class RedisClient {
                 });
                 console.log("Successfuly created Redis Client.")
             } catch (error) {
-                console.error("Failed to connect to create Redis client:", error);
+                console.error("Failed to create Redis client:", error);
             }
         }
+        await RedisClient.client.connect()
         return RedisClient.client
     }
 }

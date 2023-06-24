@@ -14,7 +14,7 @@ const port = process.env.APP_PORT || 8000;
 async function main() {
     try {
         const dbClient = await DatabaseConnection.getConnection()
-        const redisClient = await RedisClient.getClient()
+        const redclient = await RedisClient.getClient()
         GenerateRoutes(dbClient)
         app.use(bodyParser.urlencoded({ extended: false }))
         app.use(bodyParser.json())
@@ -28,3 +28,7 @@ async function main() {
 }
 
 main();
+function reject(error: any) {
+    throw new Error('Function not implemented.');
+}
+
