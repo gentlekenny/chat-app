@@ -17,23 +17,21 @@ export class UserModule {
     private generateRoutes(): void {
         this.userRouter.get("/users", authenticateToken, async (req: Request, res: Response) => {
             const allUsers = await this.userController.getAllUsers()
+            console.log(req.user)
             res.send(allUsers)
         })
         this.userRouter.post("/create-chatroom", authenticateToken, async (req: Request, res: Response) => {
-            const user = req.user as AuthenticatedUser
-            const response = await this.userController.createChatroom(user.id, req.body)
+            const response = await this.userController.createChatroom(req.user!.id, req.body)
             res.send(response)
         })
         this.userRouter.post("/join/:id", async (req: Request, res: Response) => {
-            const user = req.user as AuthenticatedUser
             const roomId = req.params.id
-            const response = await this.userController.joinChatroom(user.id, roomId)
+            const response = await this.userController.joinChatroom(req.user!.id, roomId)
             res.send(response)
         })
         this.userRouter.post("/leave/:id", async (req: Request, res: Response) => {
-            const user = req.user as AuthenticatedUser
             const roomId = req.params.id
-            const response = await this.userController.leaveChatroom(user.id, roomId)
+            const response = await this.userController.leaveChatroom(req.user!.id, roomId)
             res.send(response)
         })
     }

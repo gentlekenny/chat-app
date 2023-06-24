@@ -7,6 +7,7 @@ import { InvalidPasswordError } from "../errors/invalidPassword.error";
 import jwt from "jsonwebtoken"
 import { WrongTokenOrMissingError } from "../errors/WrongTokenOrMissing.error";
 import { Request, Response, NextFunction } from "express"
+import AuthenticatedUser from "./auth.interface";
 
 export class AuthService {
     private db: Db
@@ -77,8 +78,11 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     }
 
     try {
-        const decodedToken = jwt.verify(token, `${process.env.SECRET}`);
+        const decodedToken = jwt.verify(token, `${process.env.SECRET}`) as AuthenticatedUser;
+
+        // Saving decoded token (user info) inside request object, so I can access it from every controller
         req.user = decodedToken
+        // Enabling next middleware in line
         next();
     } catch (error) {
         return res.json(new WrongTokenOrMissingError())

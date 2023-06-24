@@ -1,5 +1,4 @@
-interface AuthenticatedUser {
-    username: string
+interface AuthenticatedUser extends Express.User {
     id: string
 }
 
