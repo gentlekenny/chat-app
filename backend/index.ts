@@ -5,6 +5,8 @@ import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 import { DatabaseConnection } from "./database/connection"
 import { GenerateRoutes, appRouter } from './routes';
+import { RedisClient } from './redis/client';
+
 
 const app: Express = express()
 const port = process.env.APP_PORT || 8000;
@@ -12,6 +14,7 @@ const port = process.env.APP_PORT || 8000;
 async function main() {
     try {
         const dbClient = await DatabaseConnection.getConnection()
+        const redisClient = await RedisClient.getClient()
         GenerateRoutes(dbClient)
         app.use(bodyParser.urlencoded({ extended: false }))
         app.use(bodyParser.json())

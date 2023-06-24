@@ -1,8 +1,7 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import { UserController } from "./user.controller";
 import { Db } from "mongodb";
 import { authenticateToken } from "../../auth/auth.service";
-import AuthenticatedUser from "../../auth/auth.interface";
 
 export class UserModule {
     public userRouter: Router

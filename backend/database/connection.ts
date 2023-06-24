@@ -1,4 +1,3 @@
-import "dotenv/config"
 import { Db, MongoClient } from "mongodb"
 
 
@@ -15,10 +14,10 @@ export class DatabaseConnection {
                 DatabaseConnection.connection = new MongoClient(uri, {
                     monitorCommands: true
                 }).db("chatapp")
-                console.log("Connection established");
+                console.log("Successfuly established connection to database.");
                 // Perform database operations here
             } catch (error) {
-                console.error("Failed to connect to MongoDB:", error);
+                console.error("Failed to connect to database:", error);
             }
         }
         return DatabaseConnection.connection
