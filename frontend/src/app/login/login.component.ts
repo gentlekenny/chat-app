@@ -40,6 +40,8 @@ export class LoginComponent implements OnInit {
           this.snackbar.open(`Successfuly logged in! Redirecting...`, '', {
             ...config, panelClass: ['ok-snackbar']
           });
+          this.redirectToChat()
+
         }
       }
     );
@@ -51,6 +53,10 @@ export class LoginComponent implements OnInit {
 
   redirectToSignup() {
     this.router.navigate(["/signup"])
+  }
+
+  redirectToChat() {
+    this.router.navigate(["/chat"])
   }
 
 
