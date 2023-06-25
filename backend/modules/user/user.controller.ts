@@ -15,14 +15,13 @@ export class UserController {
         return await this.userService.getAllUsers()
     }
 
-    async createChatroom(userId: string, name: string) {
-        const chatroom = await this.chatroomService.createChatroom(name)
-        const updatedUser = await this.userService.joinChatroom(userId, chatroom.insertedId.toString())
-        return updatedUser
+    async createChatroom(username: string, chatroomName: string) {
+        const chatroom = await this.chatroomService.createChatroom(username, chatroomName)
+        return chatroom
     }
 
-    async joinChatroom(userId: string, roomId: string) {
-        const response = await this.userService.joinChatroom(userId, roomId)
+    async joinChatroom(username: string, roomId: string) {
+        const response = await this.userService.joinChatroom(username, roomId)
         await this.chatroomService.updateMemberNumber(roomId, true)
         return response
     }
@@ -36,6 +35,11 @@ export class UserController {
     async getAllChatrooms() {
         const chatrooms = await this.chatroomService.getAllChatrooms()
         return chatrooms
+    }
+
+    async findChatroom(name: string) {
+        const chatroom = await this.chatroomService.findChatroom(name)
+        return chatroom
     }
 
 }

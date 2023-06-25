@@ -3,7 +3,7 @@
 interface User {
     username: string
     password: string
-    chatRooms?: string[] // Chatrooms
+    //chatRooms?: string[] // Chatrooms
 }
 
 export default User

@@ -22,8 +22,13 @@ export class UserModule {
             const response = await this.userController.getAllChatrooms()
             res.send(response)
         })
+        this.userRouter.get("/chatrooms/:name", authenticateToken, async (req: Request, res: Response) => {
+            const chatroomName = req.params.id
+            const response = await this.userController.findChatroom(chatroomName)
+            return response
+        })
         this.userRouter.post("/create-chatroom", authenticateToken, async (req: Request, res: Response) => {
-            const response = await this.userController.createChatroom(req.user!.id, req.body.name)
+            const response = await this.userController.createChatroom(req.user!.username, req.body.name)
             res.send(response)
         })
         this.userRouter.post("/join/:id", async (req: Request, res: Response) => {

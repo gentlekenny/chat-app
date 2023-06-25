@@ -21,33 +21,10 @@ export class UserService {
     }
 
     async joinChatroom(userId: string, newChatroom: string) {
-        const user = await this.findUser(userId)
-        if (!user) {
-            return new UserNotFoundError()
-        }
-        // Typescript requieres this assertion
-        const chatrooms = user.chatRooms!
-        user.chatRooms = [...chatrooms, newChatroom]
-
-
-        const updatedUser = this.updateUser(userId, user)
-        return updatedUser
     }
 
     async leaveChatroom(userId: string, deletedChatroom: string) {
-        const user = await this.findUser(userId)
-        if (!user) {
-            return new UserNotFoundError()
-        }
 
-        // Typescript requieres this assertion
-        const chatrooms = user.chatRooms
-        if (chatrooms) {
-            user.chatRooms = chatrooms.filter((room) => room !== deletedChatroom)
-        }
-
-        const updatedUser = this.updateUser(userId, user)
-        return updatedUser
     }
 
     async updateUser(userId: string, updatedUser: User) {

@@ -1,5 +1,6 @@
 interface AuthenticatedUser extends Express.User {
-    id: string
+    id: string,
+    username: string
 }
 
 export default AuthenticatedUser

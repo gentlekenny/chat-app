@@ -17,8 +17,8 @@ export class MessageModule {
             const newMessage = await this.messageController.sendMessage(req.body)
             res.send(newMessage)
         })
-        this.messageRouter.get("/recent", async (req: Request, res: Response) => {
-            const receiver = req.query.receiver as string
+        this.messageRouter.get("/recent/:id", async (req: Request, res: Response) => {
+            const receiver = req.params.id
             const recentMessages = await this.messageController.getRecentMessages(receiver)
             res.send(recentMessages)
         })
