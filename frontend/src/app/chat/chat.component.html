@@ -12,14 +12,12 @@
     <div class="main-window">
         <div class="chat-messages">
             <!-- Chat messages go here -->
-            <div>
-                HOP
-            </div>
+            <div *ngFor="let message of visibleMessages">{{ message }}</div>
         </div>
 
-        <div class="input-container">
-            <input type="text" class="input-field" placeholder="Type your message">
-            <button type="submit" class="send-button">Send</button>
+        <div id="input-container" class="input-container">
+            <input type="text" [(ngModel)]="message" class="input-field" (keyup.enter)="sendMessage()" placeholder="Type your message">
+            <button type="submit" class="send-button" (click)="sendMessage()">Send</button>
         </div>
 </div>
 <div class="user-list">

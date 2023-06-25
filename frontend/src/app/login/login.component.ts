@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit {
           this.snackbar.open(`Successfuly logged in! Redirecting...`, '', {
             ...config, panelClass: ['ok-snackbar']
           });
-          console.log(response.accessToken)
           localStorage.setItem('token', response.accessToken);
+          localStorage.setItem('user', response.username)
           setTimeout(() => {
             this.redirectToChat()
           }, 2000)
