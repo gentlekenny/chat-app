@@ -10,6 +10,7 @@ import { Request } from "express"
 import { Server } from 'socket.io';
 import http from "http"
 import cors from "cors"
+import { handleSocketEvents } from './socket/socket.service';
 
 
 const app: Express = express()
@@ -33,13 +34,7 @@ async function main() {
             }
         })
         io.on("connection", (socket) => {
-            // send a message to the client
-            socket.on("send-message", (data) => {
-                socket.broadcast.emit("chat-message", data.user + ": " + data.message)
-            });
-            socket.on("new-user", user => {
-                socket.broadcast.emit("user-connected", user)
-            })
+            handleSocketEvents(socket)
         });
         server.listen(port, () => {
             console.log(`Server is listening on port ${port}`);
