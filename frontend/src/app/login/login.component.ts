@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { LoginResponse } from './login.interface';
 
 @Component({
   selector: 'app-login',
@@ -8,28 +10,33 @@ import { HttpClient } from '@angular/common/http';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private http: HttpClient) { }
+  username!: string
+  password!: string
+  constructor(private http: HttpClient, private snackbar: MatSnackBar) {
+  }
 
   ngOnInit(): void {
   }
   login() {
     const url = 'http://localhost:8000/login';
 
-    // Assuming you have the username and password values from the input fields
-    const username = 'your_username';
-    const password = 'your_password';
-
     // Make the HTTP POST request
-    this.http.post(url, { username, password }).subscribe(
+    this.http.post<LoginResponse>(url, { username: this.username, password: this.password }).subscribe(
       response => {
-        console.log('Response:', response);
         // Handle the response as needed
-      },
-      error => {
-        console.error('Error:', error);
-        // Handle the error as needed
+        if (response.errorMessage) {
+          const config: MatSnackBarConfig = {
+            duration: 3000, // Adjust the duration in milliseconds (e.g., 5000 = 5 seconds)
+            panelClass: ['error-snackbar'] // Apply custom CSS class for styling
+          };
+          this.snackbar.open(`Error ${response.statusCode} : ${response.errorMessage}`, 'Close', config);
+        }
       }
     );
+  }
+
+  onChangePassword(event: Event) {
+    this.password = (event.target as HTMLInputElement).value;
   }
 
 
