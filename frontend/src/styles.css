@@ -7,3 +7,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: #fff; /* Text color */
   font-weight: bold;
 }
+
+.ok-snackbar {
+  background-color: rgb(33, 192, 54); /* Red color */
+  color: #fff; /* Text color */
+  font-weight: bold;
+}
