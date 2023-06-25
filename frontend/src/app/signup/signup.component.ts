@@ -43,6 +43,8 @@ export class SignupComponent implements OnInit {
           this.snackbar.open(`Successfuly registered new user! Redirecting to login page..`, '', {
             ...config, panelClass: ['ok-snackbar']
           });
+          this.username = ""
+          this.password = ""
           setTimeout(() => {
             // Call your method here
             this.redirectToLogin()
