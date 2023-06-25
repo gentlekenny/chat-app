@@ -2,7 +2,7 @@
   <div class="sidebar">
     <h3>My Chatrooms</h3>
     <ul class="chatroom-list">
-      <li class="chatroom-item" *ngFor="let chatroom of chatrooms">
+      <li class="chatroom-item" *ngFor="let chatroom of chatrooms" (click)="selectChatroom(chatroom)" [class.selected]="chatroom === selectedChatroom">
         {{ chatroom.name }} ({{ chatroom.totalMembers }})
         <button class="leave-button">X</button>
       </li>
@@ -10,8 +10,14 @@
     <button class="join-button">Join Chatroom</button>
   </div>
     <div class="main-window">
+
+      <ng-container *ngIf="selectedChatroom.name === ''; else chatMessages">
+    <div class="chat-messages">No selected chatroom</div>
+  </ng-container>
+    <ng-template #chatMessages>
         <div class="chat-messages">
             <!-- Chat messages go here -->
+            <p> {{ selectedChatroom.name}}</p>
             <div class="chat-message" *ngFor="let message of visibleMessages">{{ message }}</div>
         </div>
 
@@ -19,7 +25,8 @@
             <input type="text" [(ngModel)]="message" class="input-field" (keyup.enter)="sendMessage()" placeholder="Type your message">
             <button type="submit" class="send-button" (click)="sendMessage()">Send</button>
         </div>
-</div>
+        </ng-template>
+  </div>
 <div class="user-list">
             <h3 class="user-list-title">User List</h3>
             <div class="user" *ngFor="let user of users">{{ user }}</div>

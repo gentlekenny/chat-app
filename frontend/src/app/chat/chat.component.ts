@@ -15,6 +15,11 @@ export class ChatComponent implements OnInit {
   message: string = "";
   visibleMessages: string[] = []
   user: string = localStorage.getItem("user") ?? ""
+  selectedChatroom: Chatroom = {
+    name: "",
+    totalMembers: 0,
+    _id: ""
+  }
 
   constructor(private http: HttpClient, private socket: Socket) { }
 
@@ -39,10 +44,16 @@ export class ChatComponent implements OnInit {
     this.visibleMessages.push("You joined.")
   }
 
+  // Method for handling chatroom selection
+  selectChatroom(chatroom: Chatroom) {
+    this.selectedChatroom = chatroom
+  }
+
   sendMessage() {
     this.socket.emit("send-message", {
       user: this.user,
-      message: this.message
+      message: this.message,
+      receiver: this.selectedChatroom._id
     })
     this.visibleMessages.push("You: " + this.message)
     this.message = ""

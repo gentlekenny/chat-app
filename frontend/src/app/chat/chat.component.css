@@ -27,6 +27,13 @@
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  cursor: pointer;
+}
+
+/* Indicating when a chatroom is selected */
+.chatroom-item.selected {
+  font-weight: bold;  
+  background-color: #e0e0e0; 
 }
 
 .leave-button {
