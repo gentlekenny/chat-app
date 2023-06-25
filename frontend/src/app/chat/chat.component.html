@@ -12,7 +12,7 @@
     <div class="main-window">
         <div class="chat-messages">
             <!-- Chat messages go here -->
-            <div *ngFor="let message of visibleMessages">{{ message }}</div>
+            <div class="chat-message" *ngFor="let message of visibleMessages">{{ message }}</div>
         </div>
 
         <div id="input-container" class="input-container">
