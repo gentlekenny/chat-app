@@ -6,6 +6,8 @@ import bodyParser from 'body-parser';
 import { DatabaseConnection } from "./database/connection"
 import { GenerateRoutes, appRouter } from './routes';
 import { RedisClient } from './redis/client';
+import { Request } from "express"
+import cors from "cors"
 
 
 const app: Express = express()
@@ -16,6 +18,7 @@ async function main() {
         const dbClient = await DatabaseConnection.getConnection()
         const redisClient = await RedisClient.getClient()
         GenerateRoutes(dbClient)
+        app.use(cors<Request>())
         app.use(bodyParser.urlencoded({ extended: false }))
         app.use(bodyParser.json())
         app.use(appRouter)
