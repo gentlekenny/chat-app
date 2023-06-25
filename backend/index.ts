@@ -34,14 +34,13 @@ async function main() {
         })
         io.on("connection", (socket) => {
             // send a message to the client
-            socket.broadcast.emit("hello from server", 1, "2", { 3: Buffer.from([4]) });
-            console.log("Hello")
+            socket.on("send-message", (data) => {
+                socket.broadcast.emit("chat-message", data.user + ": " + data.message)
+            });
+            socket.on("new-user", user => {
+                socket.broadcast.emit("user-connected", user)
+            })
         });
-
-        io.on("/message", (socket) => {
-            socket.broadcast.emit("Hahahah, bravo")
-
-        })
         server.listen(port, () => {
             console.log(`Server is listening on port ${port}`);
         });
