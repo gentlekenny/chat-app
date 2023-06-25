@@ -34,7 +34,7 @@ async function main() {
             }
         })
         io.on("connection", (socket) => {
-            handleSocketEvents(socket)
+            handleSocketEvents(socket, dbClient)
         });
         server.listen(port, () => {
             console.log(`Server is listening on port ${port}`);
