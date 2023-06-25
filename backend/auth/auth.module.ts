@@ -20,9 +20,6 @@ export class AuthModule {
 
         this.authRouter.post("/login", async (req: Request, res: Response) => {
             const loggedUser = await this.authController.login(req.body)
-            if (!(loggedUser instanceof Error)) {
-
-            }
             res.send(loggedUser)
         })
     }

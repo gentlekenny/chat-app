@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken"
 import { WrongTokenOrMissingError } from "../errors/WrongTokenOrMissing.error";
 import { Request, Response, NextFunction } from "express"
 import AuthenticatedUser from "./auth.interface";
+import { PasswordValidationError, UsernameValidationError } from "../errors/validateCredentials.error";
 
 export class AuthService {
     private db: Db
@@ -19,6 +20,12 @@ export class AuthService {
     async register(userDto: User) {
 
         const username = userDto.username
+
+        // Validating credentials
+        const invalidCredentials = await this.validateCredentials(userDto.username, userDto.password)
+        if (invalidCredentials instanceof Error) {
+            return invalidCredentials
+        }
 
         // Checking if user with given username already exists
         const dbUser = await this.db.collection<User>("users").findOne({ username })
@@ -41,8 +48,14 @@ export class AuthService {
     }
 
 
-    async login(user: User) {
-        const username = user.username
+    async login(userDto: User) {
+        const username = userDto.username
+
+        // Validating credentials
+        const invalidCredentials = await this.validateCredentials(userDto.username, userDto.password)
+        if (invalidCredentials instanceof Error) {
+            return invalidCredentials
+        }
 
         // Finding user in database 
         const dbUser = await this.db.collection<User>("users").findOne({ username })
@@ -53,7 +66,7 @@ export class AuthService {
         }
 
         // Comparing password
-        const comparePassword = await bcrypt.compare(user.password, dbUser.password)
+        const comparePassword = await bcrypt.compare(userDto.password, dbUser.password)
         if (!comparePassword) {
             return new InvalidPasswordError()
         }
@@ -64,6 +77,15 @@ export class AuthService {
         })
         return {
             accessToken: token
+        }
+    }
+
+    async validateCredentials(username: string, password: string) {
+        if (!username || username.length < 8) {
+            return new UsernameValidationError()
+        }
+        if (!password || password.length < 8) {
+            return new PasswordValidationError()
         }
     }
 }
