@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Chatroom } from './chat.interface';
+import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-chat',
@@ -11,7 +12,7 @@ export class ChatComponent implements OnInit {
 
   chatrooms: Chatroom[] = []
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private socket: Socket) { }
 
   ngOnInit(): void {
 
@@ -19,10 +20,22 @@ export class ChatComponent implements OnInit {
 
 
     // Make the HTTP POST request
-    this.http.get<Chatroom[]>(url).subscribe(
+
+    // Retrieve access token from localStorage
+    const accessToken = localStorage.getItem('token');
+
+    // Include access token in the request headers
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+
+    this.http.get<Chatroom[]>(url, { headers }).subscribe(
       response => {
         this.chatrooms = response
       }
     );
+    this.socket.emit('message', "Poruka");
+  }
+
+  sendMessage(msg: string) {
+    this.socket.emit('message', msg);
   }
 }

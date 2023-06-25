@@ -9,6 +9,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { SignupComponent } from './signup/signup.component';
 import { ChatComponent } from './chat/chat.component';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:8000', options: {} }
 
 @NgModule({
   declarations: [
@@ -23,7 +26,8 @@ import { ChatComponent } from './chat/chat.component';
     HttpClientModule,
     BrowserAnimationsModule,
     MatSnackBarModule,
-    FormsModule
+    FormsModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [],
   bootstrap: [AppComponent]

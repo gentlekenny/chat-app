@@ -1,5 +1,6 @@
 export interface LoginResponse {
-    access_token?: string;
-    errorMessage?: string;
-    statusCode?: number;
+    accessToken: string;
+    username: string;
+    errorMessage: string;
+    statusCode: number;
 }
