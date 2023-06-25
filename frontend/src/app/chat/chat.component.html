@@ -17,7 +17,7 @@
     <ng-template #chatMessages>
         <div class="chat-messages">
             <!-- Chat messages go here -->
-            <p> {{ selectedChatroom.name}}</p>
+            <div class="selected-chatroom"> {{ selectedChatroom.name}}</div>
             <div class="chat-message" *ngFor="let message of visibleMessages">{{ message }}</div>
         </div>
 

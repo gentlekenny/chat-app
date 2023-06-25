@@ -36,6 +36,13 @@
   background-color: #e0e0e0; 
 }
 
+.selected-chatroom {
+  text-align: center;
+  font-weight: bold;
+  font-size: large;
+  margin-bottom: 1%;
+}
+
 .leave-button {
   margin-left: auto;
   background-color: #f44336;
