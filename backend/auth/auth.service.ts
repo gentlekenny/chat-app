@@ -76,6 +76,7 @@ export class AuthService {
             expiresIn: "1h"
         })
         return {
+            username: username,
             accessToken: token
         }
     }
