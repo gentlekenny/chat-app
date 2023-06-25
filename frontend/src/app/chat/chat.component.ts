@@ -18,7 +18,8 @@ export class ChatComponent implements OnInit {
   selectedChatroom: Chatroom = {
     name: "",
     totalMembers: 0,
-    _id: ""
+    _id: "",
+    users: [],
   }
 
   constructor(private http: HttpClient, private socket: Socket) { }
@@ -47,12 +48,23 @@ export class ChatComponent implements OnInit {
   // Method for handling chatroom selection
   selectChatroom(chatroom: Chatroom) {
     this.selectedChatroom = chatroom
+    // Retrieve access token from localStorage
+    const accessToken = localStorage.getItem('token');
+
+    // Include access token in the request headers
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+    this.http.get<string[]>(`http://localhost:8000/recent/${this.selectedChatroom._id}`, { headers }).subscribe(
+      response => {
+        this.visibleMessages = response
+        console.log(response)
+      }
+    )
   }
 
   sendMessage() {
     this.socket.emit("send-message", {
-      user: this.user,
-      message: this.message,
+      sender: this.user,
+      context: this.message,
       receiver: this.selectedChatroom._id
     })
     this.visibleMessages.push("You: " + this.message)
