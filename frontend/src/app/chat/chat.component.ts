@@ -11,6 +11,7 @@ import { Socket } from 'ngx-socket-io';
 export class ChatComponent implements OnInit {
 
   chatrooms: Chatroom[] = []
+  users: string[] = []
   message: string = "";
   visibleMessages: string[] = []
   user: string = localStorage.getItem("user") ?? ""
@@ -36,15 +37,6 @@ export class ChatComponent implements OnInit {
     );
 
     this.visibleMessages.push("You joined.")
-    this.socket.emit("new-user", this.user)
-
-    this.socket.on("chat-message", (message: string) => {
-      this.visibleMessages.push(message)
-    })
-
-    this.socket.on("user-connected", (user: string) => {
-      this.visibleMessages.push(user + " joined chatroom.")
-    })
   }
 
   sendMessage() {
@@ -56,4 +48,15 @@ export class ChatComponent implements OnInit {
     this.message = ""
   }
 
+  socketHandling() {
+    this.socket.emit("new-user", this.user)
+
+    this.socket.on("chat-message", (message: string) => {
+      this.visibleMessages.push(message)
+    })
+
+    this.socket.on("user-connected", (user: string) => {
+      this.visibleMessages.push(user + " joined chatroom.")
+    })
+  }
 }
