@@ -90,8 +90,12 @@ export class ChatComponent implements OnInit {
       this.visibleMessages.push(message)
     })
 
-    this.socket.on("user-connected", (user: string) => {
-      this.visibleMessages.push(user + " joined chatroom.")
+    // When a new user joins a certain channel, and someone is already chatting in that channel
+    // we want to notify that someone else has joined.
+    this.socket.on("user-connected", (data: any) => {
+      if (data.chatroomName == this.selectedChatroom.name) {
+        this.visibleMessages.push(data.user + " joined chatroom.")
+      }
     })
 
     this.socket.on("refresh-chatrooms", (interactingUser: string) => {
