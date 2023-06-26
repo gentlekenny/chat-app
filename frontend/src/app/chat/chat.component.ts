@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Chatroom } from './chat.interface';
 import { Socket } from 'ngx-socket-io';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class ChatComponent implements OnInit {
   }
   displayJoinCreateChatroom: boolean = false
 
-  constructor(private http: HttpClient, public socket: Socket) { }
+  constructor(private http: HttpClient, public socket: Socket, private router: Router) { }
 
   ngOnInit(): void {
 
@@ -40,6 +41,9 @@ export class ChatComponent implements OnInit {
 
     this.http.get<Chatroom[]>(url, { headers }).subscribe(
       response => {
+        // If url succeeds, the result will be of array type
+        // But if not, I know it's an error.
+        this.didErrorOccur(response)
         this.chatrooms = response
       }
     );
@@ -57,6 +61,7 @@ export class ChatComponent implements OnInit {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     this.http.get<string[]>(`http://localhost:8000/recent/${this.selectedChatroom._id}`, { headers }).subscribe(
       response => {
+        this.didErrorOccur(response)
         this.visibleMessages = response
         this.scrollChatMessagesContainerToBottom()
       }
@@ -125,6 +130,7 @@ export class ChatComponent implements OnInit {
 
       this.http.get<Chatroom[]>(url, { headers }).subscribe(
         response => {
+          this.didErrorOccur(response)
           this.chatrooms = response
           if (this.selectedChatroom.name != "") {
             const updatedChatroom = this.chatrooms.find(chatroom => chatroom.name == this.selectedChatroom.name)
@@ -145,6 +151,12 @@ export class ChatComponent implements OnInit {
     if (this.chatMessagesContainer && this.chatMessagesContainer.nativeElement) {
       const container = this.chatMessagesContainer.nativeElement;
       container.scrollTop = container.scrollHeight + 50;
+    }
+  }
+
+  didErrorOccur(response: any) {
+    if (Array.isArray(response)) {
+      this.router.navigate(["/login"])
     }
   }
 }
