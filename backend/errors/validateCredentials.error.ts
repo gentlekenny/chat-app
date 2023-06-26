@@ -5,8 +5,8 @@ export class UsernameValidationError extends Error {
     statusCode: number;
 
     constructor() {
-        super("Username must be atleast 8 characters long.")
-        this.errorMessage = "Username must be atleast 8 characters long."
+        super("Username must be atleast 5 characters long and cannot contain whitespaces.")
+        this.errorMessage = "Username must be atleast 5 characters long and cannot contain whitespaces."
         this.statusCode = StatusCodes.BAD_REQUEST
 
     }
@@ -17,8 +17,8 @@ export class PasswordValidationError extends Error {
     statusCode: number;
 
     constructor() {
-        super("Username must be atleast 8 characters long.")
-        this.errorMessage = "Username must be atleast 8 characters long."
+        super("Password must be atleast 8 characters long and cannot contain whitespaces.")
+        this.errorMessage = "Password must be atleast 8 characters long and cannot contain whitespaces."
         this.statusCode = StatusCodes.BAD_REQUEST
 
     }

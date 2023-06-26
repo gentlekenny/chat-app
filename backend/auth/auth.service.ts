@@ -22,7 +22,7 @@ export class AuthService {
         const username = userDto.username
 
         // Validating credentials
-        const invalidCredentials = await this.validateCredentials(userDto.username, userDto.password)
+        const invalidCredentials = await this.validateCredentials(userDto.username, userDto.password, true)
         if (invalidCredentials instanceof Error) {
             return invalidCredentials
         }
@@ -52,7 +52,7 @@ export class AuthService {
         const username = userDto.username
 
         // Validating credentials
-        const invalidCredentials = await this.validateCredentials(userDto.username, userDto.password)
+        const invalidCredentials = await this.validateCredentials(userDto.username, userDto.password, false)
         if (invalidCredentials instanceof Error) {
             return invalidCredentials
         }
@@ -81,11 +81,11 @@ export class AuthService {
         }
     }
 
-    async validateCredentials(username: string, password: string) {
-        if (!username || username.length < 8) {
+    async validateCredentials(username: string, password: string, forRegister: boolean) {
+        if (!username || username.length < 5 || username.indexOf(' ') > 0) {
             return new UsernameValidationError()
         }
-        if (!password || password.length < 8) {
+        if (forRegister && (!password || password.length < 8 || password.indexOf(' ') > 0)) {
             return new PasswordValidationError()
         }
     }
