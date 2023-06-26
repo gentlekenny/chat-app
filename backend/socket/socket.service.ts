@@ -26,8 +26,8 @@ export const handleSocketEvents = (socket: Socket, db: Db) => {
                     $push: { users: user },
                 },)
             }
-            socket.broadcast.emit("refresh-chatrooms", user)
         })
+        socket.broadcast.emit("refresh-chatrooms", user)
     })
 }
 
