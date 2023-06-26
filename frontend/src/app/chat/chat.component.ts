@@ -137,7 +137,7 @@ export class ChatComponent implements OnInit {
   }
 
   showJoinCreateChatroom() {
-    this.displayJoinCreateChatroom = true
+    this.displayJoinCreateChatroom = !this.displayJoinCreateChatroom
   }
 
   // Method for automatic scrolling when new message is sent
