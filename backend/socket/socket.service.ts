@@ -30,6 +30,24 @@ export const handleSocketEvents = (socket: Socket, db: Db) => {
             socket.broadcast.emit("refresh-chatrooms", user)
         })
     })
+
+    socket.on("leaving-chatroom", (data) => {
+        findChatroom(data.roomName, db).then(existingChatroom => {
+            const name = data.roomName
+            db.collection("chatrooms").findOneAndUpdate({ name }, {
+                $inc: { totalMembers: -1 },
+                $pull: { users: data.user }
+
+
+            },)
+            socket.broadcast.emit("user-disconnected", {
+                user: data.user,
+                chatroomName: name
+            })
+            socket.emit("refresh-chatrooms", data.user)
+            socket.broadcast.emit("refresh-chatrooms", data.user)
+        })
+    })
 }
 
 const findChatroom = async (name: string, db: Db) => {
