@@ -14,8 +14,9 @@ export class MessageService {
     }
 
     async getRecentMessages(receiver: string) {
-        // Recent would be 50-100, but for this case I've set limit to 20
-        const recentMessages = ((await this.db.collection<Message>("messages").find({ receiver }).limit(20).toArray()).map(message => message.sender + ": " + message.context))
-        return recentMessages
+        // Recent would be 50-100, but for this case I've set limit to 10
+        const recentMessages = ((await this.db.collection<Message>("messages").find({ receiver }).toArray()).map(message => message.sender + ": " + message.context))
+        const lastMessages = recentMessages.slice(-10)
+        return lastMessages
     }
 }

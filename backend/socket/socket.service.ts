@@ -1,5 +1,6 @@
 import { Db } from "mongodb";
 import { Socket } from "socket.io";
+import Chatroom from "../modules/chatroom/chatroom.interface";
 
 export const handleSocketEvents = (socket: Socket, db: Db) => {
     socket.on("send-message", (data) => {
@@ -11,4 +12,26 @@ export const handleSocketEvents = (socket: Socket, db: Db) => {
     socket.on("new-user", user => {
         socket.broadcast.emit("user-connected", user)
     })
+
+    // This could have been done with a simple post request, but I am into sockets
+    socket.on("chatroom-created", chatroom => {
+        const name = chatroom.name
+        const user = chatroom.users[0]
+        findChatroom(name, db).then(existingChatroom => {
+            if (!existingChatroom) {
+                db.collection("chatrooms").insertOne(chatroom)
+            } else if (!existingChatroom.users?.includes(user)) {
+                db.collection("chatrooms").findOneAndUpdate({ name }, {
+                    $inc: { totalMembers: 1 },
+                    $push: { users: user },
+                },)
+            }
+            socket.broadcast.emit("refresh-chatrooms", user)
+        })
+    })
+}
+
+const findChatroom = async (name: string, db: Db) => {
+    const chatroom = await db.collection<Chatroom>("chatrooms").findOne({ name })
+    return chatroom
 }
