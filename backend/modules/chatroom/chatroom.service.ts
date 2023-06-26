@@ -12,7 +12,6 @@ export class ChatroomService {
         const chatrooms = await this.db.collection<Chatroom>("chatrooms").find({
             "users": { $in: [user] }
         }).toArray()
-        console.log(chatrooms)
         return chatrooms
     }
 

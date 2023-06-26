@@ -20,7 +20,6 @@ const port = process.env.APP_PORT || 8000;
 async function main() {
     try {
         const dbClient = await DatabaseConnection.getConnection()
-        const redisClient = await RedisClient.getClient()
         GenerateRoutes(dbClient)
         app.use(cors<Request>())
         app.use(bodyParser.urlencoded({ extended: false }))

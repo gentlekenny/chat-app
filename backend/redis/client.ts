@@ -20,7 +20,6 @@ export class RedisClient {
                 console.error("Failed to create Redis client:", error);
             }
         }
-        await RedisClient.client.connect()
         return RedisClient.client
     }
 }
