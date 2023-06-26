@@ -9,10 +9,6 @@ export const handleSocketEvents = (socket: Socket, db: Db) => {
         // so no need to send a post request, socket can handle it
         db.collection("messages").insertOne(data)
     });
-    socket.on("new-user", user => {
-        socket.broadcast.emit("user-connected", user)
-    })
-
     // This could have been done with a simple post request, but I am into sockets
     socket.on("chatroom-created", chatroom => {
         const name = chatroom.name
@@ -26,6 +22,10 @@ export const handleSocketEvents = (socket: Socket, db: Db) => {
                     $push: { users: user },
                 },)
             }
+            socket.broadcast.emit("user-connected", {
+                user: user,
+                chatroomName: chatroom.name
+            })
             socket.emit("refresh-chatrooms", user)
         })
     })
