@@ -69,14 +69,20 @@ export class ChatComponent implements OnInit {
   }
 
   sendMessage() {
-    this.socket.emit("send-message", {
-      sender: this.user,
-      context: this.message,
-      receiver: this.selectedChatroom._id
-    })
-    this.scrollChatMessagesContainerToBottom()
-    this.visibleMessages.push(`${this.user}: ${this.message}`)
-    this.message = ""
+    // Only in case input is not empty
+    if (this.message != '') {
+      this.socket.emit("send-message", {
+        sender: this.user,
+        context: this.message,
+        receiver: this.selectedChatroom._id
+      })
+      // We need to handle memory usage
+      // Arrays can be deadly for this issue, so in case we get to see 100 messages, we are just gonna delete first 20
+      if (this.visibleMessages.length == 100) this.visibleMessages = this.visibleMessages.slice(20)
+      this.visibleMessages.push(`${this.user}: ${this.message}`)
+      this.scrollChatMessagesContainerToBottom()
+      this.message = ""
+    }
   }
 
   joinChatroom(name: string) {
@@ -150,12 +156,12 @@ export class ChatComponent implements OnInit {
   scrollChatMessagesContainerToBottom() {
     if (this.chatMessagesContainer && this.chatMessagesContainer.nativeElement) {
       const container = this.chatMessagesContainer.nativeElement;
-      container.scrollTop = container.scrollHeight + 50;
+      container.scrollTop = container.scrollHeight;
     }
   }
 
   didErrorOccur(response: any) {
-    if (Array.isArray(response)) {
+    if (!Array.isArray(response)) {
       this.router.navigate(["/login"])
     }
   }
