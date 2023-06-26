@@ -8,8 +8,11 @@ export class ChatroomService {
         this.db = db
     }
 
-    async getAllChatrooms() {
-        const chatrooms = await this.db.collection<Chatroom>("chatrooms").find({}).toArray()
+    async getAllChatrooms(user: string) {
+        const chatrooms = await this.db.collection<Chatroom>("chatrooms").find({
+            "users": { $in: [user] }
+        }).toArray()
+        console.log(chatrooms)
         return chatrooms
     }
 
@@ -23,23 +26,6 @@ export class ChatroomService {
         const savedChatroom = await this.db.collection<Chatroom>("chatrooms").insertOne(newChatroom)
 
         return savedChatroom
-    }
-
-    async updateMemberNumber(roomId: string, increasing: boolean) {
-        // Calling this method only if someone joins or leaves chatroom
-        const room = await this.db.collection<Chatroom>("chatrooms").findOne({ roomId })
-        var numberOfMembers = room?.totalMembers
-        if (numberOfMembers) {
-            if (increasing) {
-                numberOfMembers = numberOfMembers + 1
-            } else {
-                numberOfMembers = numberOfMembers - 1
-            }
-        }
-        const updatedRoom = await this.db.collection<Chatroom>("chatrooms").updateOne({ roomId }, {
-            totalMembers: numberOfMembers
-        })
-        return updatedRoom
     }
 
     async findChatroom(chatroomName: string) {

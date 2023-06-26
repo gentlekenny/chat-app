@@ -20,20 +20,8 @@ export class UserController {
         return chatroom
     }
 
-    async joinChatroom(username: string, roomId: string) {
-        const response = await this.userService.joinChatroom(username, roomId)
-        await this.chatroomService.updateMemberNumber(roomId, true)
-        return response
-    }
-
-    async leaveChatroom(userId: string, roomId: string) {
-        const response = await this.userService.leaveChatroom(userId, roomId)
-        await this.chatroomService.updateMemberNumber(roomId, false)
-        return response
-    }
-
-    async getAllChatrooms() {
-        const chatrooms = await this.chatroomService.getAllChatrooms()
+    async getAllChatrooms(username: string) {
+        const chatrooms = await this.chatroomService.getAllChatrooms(username)
         return chatrooms
     }
 

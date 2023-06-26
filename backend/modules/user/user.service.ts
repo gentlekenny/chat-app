@@ -1,7 +1,6 @@
 import { Db, ObjectId } from "mongodb";
 import User from "./user.interface";
-import { UserNotFoundError } from "../../errors/userDoesNotExist.error";
-import { RedisClient } from "../../redis/client";
+
 
 export class UserService {
     private db: Db
@@ -18,13 +17,6 @@ export class UserService {
     async findUser(id: string) {
         const user = await this.db.collection<User>("users").findOne({ _id: new ObjectId(id) })
         return user;
-    }
-
-    async joinChatroom(userId: string, newChatroom: string) {
-    }
-
-    async leaveChatroom(userId: string, deletedChatroom: string) {
-
     }
 
     async updateUser(userId: string, updatedUser: User) {

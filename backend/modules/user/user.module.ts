@@ -19,7 +19,9 @@ export class UserModule {
             res.send(allUsers)
         })
         this.userRouter.get("/chatrooms", authenticateToken, async (req: Request, res: Response) => {
-            const response = await this.userController.getAllChatrooms()
+            // Reading user from request
+            const user = req.user?.username ?? ""
+            const response = await this.userController.getAllChatrooms(user)
             res.send(response)
         })
         this.userRouter.get("/chatrooms/:name", authenticateToken, async (req: Request, res: Response) => {
@@ -29,16 +31,6 @@ export class UserModule {
         })
         this.userRouter.post("/create-chatroom", authenticateToken, async (req: Request, res: Response) => {
             const response = await this.userController.createChatroom(req.user!.username, req.body.name)
-            res.send(response)
-        })
-        this.userRouter.post("/join/:id", async (req: Request, res: Response) => {
-            const roomId = req.params.id
-            const response = await this.userController.joinChatroom(req.user!.id, roomId)
-            res.send(response)
-        })
-        this.userRouter.post("/leave/:id", async (req: Request, res: Response) => {
-            const roomId = req.params.id
-            const response = await this.userController.leaveChatroom(req.user!.id, roomId)
             res.send(response)
         })
     }
