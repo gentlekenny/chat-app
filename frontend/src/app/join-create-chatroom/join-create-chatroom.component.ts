@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Chatroom } from '../chat/chat.interface';
+import { Socket } from 'ngx-socket-io';
+
 
 @Component({
   selector: 'app-join-create-chatroom',
@@ -7,9 +8,20 @@ import { Chatroom } from '../chat/chat.interface';
   styleUrls: ['./join-create-chatroom.component.css']
 })
 export class JoinCreateChatroomComponent {
-  @Input() availableChatrooms: Chatroom[] = []
 
-  joinChatroom(): void {
+  @Input() public joinChatroom: (name: string) => void = () => { }
+  @Input() public user: string = ""
+  @Input() public socket: Socket | null = null
 
+  chatroomName: string = ""
+
+  joinChatroomOnClick() {
+    const chatroom = {
+      name: this.chatroomName,
+      users: [this.user],
+      totalMembers: 1
+    }
+    this.socket?.emit("chatroom-created", (chatroom))
   }
+
 }

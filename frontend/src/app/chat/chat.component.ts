@@ -13,7 +13,6 @@ export class ChatComponent implements OnInit {
 
   @ViewChild('chatMessagesContainer') chatMessagesContainer!: ElementRef;
   chatrooms: Chatroom[] = []
-  users: string[] = []
   message: string = "";
   visibleMessages: string[] = []
   user: string = sessionStorage.getItem("user") ?? ""
@@ -25,7 +24,7 @@ export class ChatComponent implements OnInit {
   }
   displayJoinCreateChatroom: boolean = false
 
-  constructor(private http: HttpClient, private socket: Socket) { }
+  constructor(private http: HttpClient, public socket: Socket) { }
 
   ngOnInit(): void {
 
@@ -51,7 +50,6 @@ export class ChatComponent implements OnInit {
   // Method for handling chatroom selection
   selectChatroom(chatroom: Chatroom) {
     this.selectedChatroom = chatroom
-    this.users = chatroom.users
     // Retrieve access token from sessionStorage
     const accessToken = sessionStorage.getItem('token');
 
@@ -76,8 +74,15 @@ export class ChatComponent implements OnInit {
     this.message = ""
   }
 
+  joinChatroom(name: string) {
+    const chatroom = {
+      name: name,
+      users: [this.user]
+    }
+    this.socket.emit("chatroom-created", (chatroom))
+  }
+
   socketHandling() {
-    this.socket.emit("new-user", this.user)
 
     this.socket.on("chat-message", (message: string) => {
       this.visibleMessages.push(message)
@@ -85,6 +90,23 @@ export class ChatComponent implements OnInit {
 
     this.socket.on("user-connected", (user: string) => {
       this.visibleMessages.push(user + " joined chatroom.")
+    })
+
+    this.socket.on("refresh-chatrooms", (interactingUser: string) => {
+      if (this.user == interactingUser) {
+        const url = 'http://localhost:8000/chatrooms';
+        // Retrieve access token from sessionStorage
+        const accessToken = sessionStorage.getItem('token');
+
+        // Include access token in the request headers
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+
+        this.http.get<Chatroom[]>(url, { headers }).subscribe(
+          response => {
+            this.chatrooms = response
+          }
+        );
+      }
     })
   }
 
@@ -96,7 +118,7 @@ export class ChatComponent implements OnInit {
   scrollChatMessagesContainerToBottom() {
     if (this.chatMessagesContainer && this.chatMessagesContainer.nativeElement) {
       const container = this.chatMessagesContainer.nativeElement;
-      container.scrollTop = container.scrollHeight - container.clientHeight + 100;
+      container.scrollTop = container.scrollHeight + 50;
     }
   }
 }

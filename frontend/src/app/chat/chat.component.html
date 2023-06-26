@@ -8,7 +8,7 @@
       </li>
     </ul>
     <button (click)="showJoinCreateChatroom()" class="join-button">Create or join chatroom</button>
-    <app-join-create-chatroom *ngIf="displayJoinCreateChatroom" [availableChatrooms]="chatrooms"></app-join-create-chatroom>
+    <app-join-create-chatroom [user]="user" [socket]="socket" [joinChatroom]="joinChatroom" *ngIf="displayJoinCreateChatroom"></app-join-create-chatroom>
 
   </div>
     <div class="main-window">
@@ -31,7 +31,7 @@
   </div>
 <div class="user-list">
             <h3 class="user-list-title">User List</h3>
-            <div class="user" *ngFor="let user of users">{{ user }}</div>
+            <div class="user" *ngFor="let user of selectedChatroom.users">{{ user }}</div>
                 <!-- User list goes here -->
         </div>
     <!-- Content for the main chat window goes here -->
