@@ -5,10 +5,10 @@ import bcrypt from "bcrypt"
 import { UserNotFoundError } from "../errors/userDoesNotExist.error";
 import { InvalidPasswordError } from "../errors/invalidPassword.error";
 import jwt from "jsonwebtoken"
-import { WrongTokenOrMissingError } from "../errors/WrongTokenOrMissing.error";
 import { Request, Response, NextFunction } from "express"
 import AuthenticatedUser from "./auth.interface";
 import { PasswordValidationError, UsernameValidationError } from "../errors/validateCredentials.error";
+import { WrongTokenOrMissingError } from "../errors/WrongTokenOrMissing.error";
 
 export class AuthService {
     private db: Db
@@ -102,6 +102,13 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 
     try {
         const decodedToken = jwt.verify(token, `${process.env.SECRET}`) as AuthenticatedUser;
+
+        // Cheking if token expired
+        const expirationTime = decodedToken.exp * 1000
+
+        if (Date.now() > expirationTime) {
+            return res.json(new WrongTokenOrMissingError())
+        }
 
         // Saving decoded token (user info) inside request object, so I can access it from every controller
         req.user = decodedToken
