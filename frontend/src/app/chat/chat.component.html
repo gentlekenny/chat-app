@@ -4,7 +4,7 @@
     <ul class="chatroom-list">
       <li class="chatroom-item" *ngFor="let chatroom of chatrooms" (click)="selectChatroom(chatroom)" [class.selected]="chatroom === selectedChatroom">
         {{ chatroom.name }} ({{ chatroom.totalMembers }})
-        <button class="leave-button">X</button>
+        <button (click)="leaveChatroom()" class="leave-button">X</button>
       </li>
     </ul>
     <button (click)="showJoinCreateChatroom()" class="join-button">Create or join chatroom</button>

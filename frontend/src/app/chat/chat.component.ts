@@ -84,6 +84,10 @@ export class ChatComponent implements OnInit {
     this.socket.emit("chatroom-created", (chatroom))
   }
 
+  leaveChatroom() {
+    console.log("op")
+  }
+
   socketHandling() {
 
     this.socket.on("chat-message", (message: string) => {
