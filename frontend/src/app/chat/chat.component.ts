@@ -14,7 +14,7 @@ export class ChatComponent implements OnInit {
   users: string[] = []
   message: string = "";
   visibleMessages: string[] = []
-  user: string = localStorage.getItem("user") ?? ""
+  user: string = sessionStorage.getItem("user") ?? ""
   selectedChatroom: Chatroom = {
     name: "",
     totalMembers: 0,
@@ -30,8 +30,8 @@ export class ChatComponent implements OnInit {
 
     // Make the HTTP POST request
 
-    // Retrieve access token from localStorage
-    const accessToken = localStorage.getItem('token');
+    // Retrieve access token from sessionStorage
+    const accessToken = sessionStorage.getItem('token');
 
     // Include access token in the request headers
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
@@ -48,8 +48,8 @@ export class ChatComponent implements OnInit {
   // Method for handling chatroom selection
   selectChatroom(chatroom: Chatroom) {
     this.selectedChatroom = chatroom
-    // Retrieve access token from localStorage
-    const accessToken = localStorage.getItem('token');
+    // Retrieve access token from sessionStorage
+    const accessToken = sessionStorage.getItem('token');
 
     // Include access token in the request headers
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);

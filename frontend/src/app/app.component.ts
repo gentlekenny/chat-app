@@ -13,7 +13,7 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
-    if (!localStorage.getItem("token")) {
+    if (!sessionStorage.getItem("token")) {
       this.router.navigate(["/login"])
     } else {
       this.router.navigate(["/chat"])
