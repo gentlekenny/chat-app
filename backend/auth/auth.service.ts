@@ -8,8 +8,7 @@ import jwt from "jsonwebtoken"
 import { Request, Response, NextFunction } from "express"
 import AuthenticatedUser from "./auth.interface";
 import { PasswordValidationError, UsernameValidationError } from "../errors/validateCredentials.error";
-import { WrongTokenOrMissingError } from "../errors/WrongTokenOrMissing.error";
-
+import { WrongTokenOrMissingError } from "../errors/wrongTokenOrMissing.error";
 export class AuthService {
     private db: Db
 
