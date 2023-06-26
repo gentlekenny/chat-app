@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { SignupComponent } from './signup/signup.component';
 import { ChatComponent } from './chat/chat.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { JoinCreateChatroomComponent } from './join-create-chatroom/join-create-chatroom.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:8000', options: {} }
 
@@ -18,7 +19,8 @@ const config: SocketIoConfig = { url: 'http://localhost:8000', options: {} }
     AppComponent,
     LoginComponent,
     SignupComponent,
-    ChatComponent
+    ChatComponent,
+    JoinCreateChatroomComponent
   ],
   imports: [
     BrowserModule,

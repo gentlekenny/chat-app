@@ -84,6 +84,8 @@
   margin-bottom: 1%;
   padding: 1%;
   width: 500px;
+  box-sizing: padding-box;
+  -moz-box-sizing: padding-box;
 }
 
 .chat-message {
@@ -128,3 +130,9 @@
   cursor: pointer;
 }
 
+.join-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Adjust the height as needed */
+}

@@ -7,15 +7,17 @@
         <button class="leave-button">X</button>
       </li>
     </ul>
-    <button class="join-button">Create or join chatroom</button>
+    <button (click)="showJoinCreateChatroom()" class="join-button">Create or join chatroom</button>
+    <app-join-create-chatroom *ngIf="displayJoinCreateChatroom" [availableChatrooms]="chatrooms"></app-join-create-chatroom>
+
   </div>
     <div class="main-window">
 
-      <ng-container *ngIf="selectedChatroom.name === ''; else chatMessages">
-    <div class="chat-messages">No selected chatroom</div>
-  </ng-container>
+    <ng-container *ngIf="selectedChatroom.name === ''; else chatMessages">
+      <div class="chat-messages">No selected chatroom</div>
+    </ng-container>
     <ng-template #chatMessages>
-        <div class="chat-messages">
+        <div class="chat-messages" #chatMessagesContainer>
             <!-- Chat messages go here -->
             <div class="selected-chatroom"> {{ selectedChatroom.name}}</div>
             <div class="chat-message" *ngFor="let message of visibleMessages">{{ message }}</div>
