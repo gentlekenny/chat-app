@@ -44,8 +44,6 @@ export class ChatComponent implements OnInit {
       }
     );
 
-    this.visibleMessages.push("You joined.")
-
     this.socketHandling()
   }
 
@@ -103,20 +101,23 @@ export class ChatComponent implements OnInit {
     })
 
     this.socket.on("refresh-chatrooms", (interactingUser: string) => {
-      if (this.user == interactingUser) {
-        const url = 'http://localhost:8000/chatrooms';
-        // Retrieve access token from sessionStorage
-        const accessToken = sessionStorage.getItem('token');
+      const url = 'http://localhost:8000/chatrooms';
+      // Retrieve access token from sessionStorage
+      const accessToken = sessionStorage.getItem('token');
 
-        // Include access token in the request headers
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+      // Include access token in the request headers
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
-        this.http.get<Chatroom[]>(url, { headers }).subscribe(
-          response => {
-            this.chatrooms = response
+      this.http.get<Chatroom[]>(url, { headers }).subscribe(
+        response => {
+          this.chatrooms = response
+          if (this.selectedChatroom.name != "") {
+            const updatedChatroom = this.chatrooms.find(chatroom => chatroom.name == this.selectedChatroom.name)
+            if (updatedChatroom) this.selectedChatroom = updatedChatroom
           }
-        );
-      }
+        }
+      );
+
     })
   }
 

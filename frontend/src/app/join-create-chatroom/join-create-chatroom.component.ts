@@ -22,7 +22,7 @@ export class JoinCreateChatroomComponent {
 
   joinChatroomOnClick() {
     if (this.chatroomName.length <= 4 || this.chatroomName.indexOf(' ') > 0) {
-      this.inputError()
+      this.showSnackbar(true)
       return
     }
     const chatroom = {
@@ -32,15 +32,21 @@ export class JoinCreateChatroomComponent {
     }
     this.socket?.emit("chatroom-created", (chatroom))
     this.chatroomName = ''
+    this.showSnackbar(false)
   }
 
-  inputError() {
+  showSnackbar(isError: boolean) {
     const config: MatSnackBarConfig = {
       duration: 3000, // Duration of info window
       panelClass: ['error-snackbar'], // Using this winow style
       verticalPosition: 'top'
     };
-    this.snackbar.open(`Error: Chatroom name must be atleast 5 characters long and must not contain whitespaces.`, '', config);
+    if (isError) {
+      this.snackbar.open(`Error: Chatroom name must be atleast 5 characters long and must not contain whitespaces.`, '', config);
+    } else {
+      config.panelClass = ['ok-snackbar']
+      this.snackbar.open(`Success. New chatroom has been added to My Chatrooms list.`, '', config);
+    }
     this.chatroomName = ''
   }
 }
