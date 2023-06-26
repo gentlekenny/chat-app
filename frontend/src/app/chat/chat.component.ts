@@ -45,6 +45,8 @@ export class ChatComponent implements OnInit {
     );
 
     this.visibleMessages.push("You joined.")
+
+    this.socketHandling()
   }
 
   // Method for handling chatroom selection
