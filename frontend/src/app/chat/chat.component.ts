@@ -82,8 +82,17 @@ export class ChatComponent implements OnInit {
     this.socket.emit("chatroom-created", (chatroom))
   }
 
-  leaveChatroom() {
-    console.log("op")
+  leaveChatroom(event: Event, roomName: string) {
+    event.stopPropagation()
+    this.socket.emit("leaving-chatroom", {
+      user: this.user,
+      roomName: roomName
+    })
+    if (this.selectedChatroom.name == roomName) {
+      this.selectedChatroom.name = ''
+      this.selectedChatroom.users = []
+      this.selectedChatroom._id = ''
+    }
   }
 
   socketHandling() {
@@ -97,6 +106,12 @@ export class ChatComponent implements OnInit {
     this.socket.on("user-connected", (data: any) => {
       if (data.chatroomName == this.selectedChatroom.name) {
         this.visibleMessages.push(data.user + " joined chatroom.")
+      }
+    })
+
+    this.socket.on("user-disconnected", (data: any) => {
+      if (data.chatroomName == this.selectedChatroom.name) {
+        this.visibleMessages.push(data.user + " left.")
       }
     })
 
