@@ -27,6 +27,7 @@ export const handleSocketEvents = (socket: Socket, db: Db) => {
                 chatroomName: chatroom.name
             })
             socket.emit("refresh-chatrooms", user)
+            socket.broadcast.emit("refresh-chatrooms", user)
         })
     })
 }
