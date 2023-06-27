@@ -12,7 +12,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:13
+FROM node:14
 
 ENV NODE_ENV production
 USER node
