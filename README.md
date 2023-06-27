@@ -4,7 +4,7 @@ Application is up and running [here.](https://chatapp-frontend-9ec9c03ceef6.hero
 
 ## Application structure
 
-Application project consists of two folders : **frontend** and **backend**. As their names suggest, they present visual stuff for the application and logic, respectively. Each of those projects are independent, on their own. That means that, if you change environment variables on the frontend to a diffrent server host, frontend is still going to work.  I really like this folder structure because one project is split to it's pieces, and yet still together on one git repository.
+Application project consists of two folders : **frontend** and **backend**. As their names suggest, they present visual aspects for the application and logic, respectively. Each of those projects are independent, on their own. That means that, if you change environment variables on the frontend to a diffrent server host, frontend is still going to work.  I really like this folder structure because one project is split to it's pieces, and yet still together on one git repository.
 
 ### Technologies used:
 Node.js, Express.js, Socket.IO , Redis , JWT, Heroku and Angular.
