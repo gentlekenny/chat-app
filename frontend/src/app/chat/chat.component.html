@@ -19,7 +19,7 @@
       <div class="chat-messages">No selected chatroom</div>
     </ng-container>
     <ng-template #chatMessages>
-        <div class="chat-messages" #chatMessagesContainer>
+        <div class="chat-messages" #scrollMe [scrollTop]="scrollMe.scrollHeight" #chatMessagesContainer>
             <!-- Chat messages go here -->
             <div class="selected-chatroom"> {{ selectedChatroom.name}}</div>
             <div class="chat-message" *ngFor="let message of visibleMessages">{{ message }}</div>
@@ -34,8 +34,5 @@
 <div class="user-list">
             <h3 class="my-chatrooms">User List</h3>
             <div class="user" *ngFor="let user of selectedChatroom.users">{{ user }}</div>
-                <!-- User list goes here -->
         </div>
-    <!-- Content for the main chat window goes here -->
-    <!-- (click)="leaveChatroom(chatroom)-->
 </div>

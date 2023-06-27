@@ -97,6 +97,7 @@
   margin-bottom: 1%;
   padding: 1%;
   width: 500px;
+  height: 100%;
   box-sizing: padding-box;
   -moz-box-sizing: padding-box;
 }

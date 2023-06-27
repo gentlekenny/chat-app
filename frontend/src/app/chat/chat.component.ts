@@ -63,7 +63,6 @@ export class ChatComponent implements OnInit {
       response => {
         this.didErrorOccur(response)
         this.visibleMessages = response
-        this.scrollChatMessagesContainerToBottom()
       }
     )
   }
@@ -80,7 +79,6 @@ export class ChatComponent implements OnInit {
       // Arrays can be deadly for this issue, so in case we get to see 100 messages, we are just gonna delete first 20
       if (this.visibleMessages.length == 100) this.visibleMessages = this.visibleMessages.slice(20)
       this.visibleMessages.push(`${this.user}: ${this.message}`)
-      this.scrollChatMessagesContainerToBottom()
       this.message = ""
     }
   }
@@ -152,13 +150,6 @@ export class ChatComponent implements OnInit {
     this.displayJoinCreateChatroom = !this.displayJoinCreateChatroom
   }
 
-  // Method for automatic scrolling when new message is sent
-  scrollChatMessagesContainerToBottom() {
-    if (this.chatMessagesContainer && this.chatMessagesContainer.nativeElement) {
-      const container = this.chatMessagesContainer.nativeElement;
-      container.scrollTop = container.scrollHeight;
-    }
-  }
 
   didErrorOccur(response: any) {
     if (!Array.isArray(response)) {
