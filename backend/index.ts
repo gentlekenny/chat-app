@@ -14,7 +14,7 @@ import { handleSocketEvents } from './socket/socket.service';
 
 
 const app: Express = express()
-const port = process.env.APP_PORT || 8000;
+const port = process.env.PORT || 8000;
 
 
 async function main() {
