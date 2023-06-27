@@ -42,7 +42,7 @@ export class JoinCreateChatroomComponent {
       verticalPosition: 'top'
     };
     if (isError) {
-      this.snackbar.open(`Error: Chatroom name must be atleast 5 characters long and must not contain whitespaces.`, '', config);
+      this.snackbar.open(`Error: Chatroom name must be 5-20 characters long and must not contain whitespaces.`, '', config);
     } else {
       config.panelClass = ['ok-snackbar']
       this.snackbar.open(`Success. New chatroom has been added to My Chatrooms list.`, '', config);
