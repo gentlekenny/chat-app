@@ -4,9 +4,11 @@ export class UsernameValidationError extends Error {
     errorMessage: string
     statusCode: number;
 
+    // We don't want messy names and SQL injection
+    // That's why we set these character long and whitespace restrictions
     constructor() {
-        super("Username must be atleast 5 characters long and cannot contain whitespaces.")
-        this.errorMessage = "Username must be atleast 5 characters long and cannot contain whitespaces."
+        super("Username must be 5-20 characters long and cannot contain whitespaces.")
+        this.errorMessage = "Username must be 5-20 characters characters long and cannot contain whitespaces."
         this.statusCode = StatusCodes.BAD_REQUEST
 
     }

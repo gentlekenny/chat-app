@@ -81,10 +81,10 @@ export class AuthService {
     }
 
     async validateCredentials(username: string, password: string, forRegister: boolean) {
-        if (!username || username.length < 5 || username.indexOf(' ') > 0) {
+        if (!username || username.length < 5 || username.length > 20 || username.indexOf(' ') > 0) {
             return new UsernameValidationError()
         }
-        if (forRegister && (!password || password.length < 8 || password.indexOf(' ') > 0)) {
+        if (forRegister && (!password || password.length < 8 || password.length > 20 || password.indexOf(' ') > 0)) {
             return new PasswordValidationError()
         }
     }
