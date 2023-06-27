@@ -9,7 +9,7 @@ export class SnackbarService {
 
   showSnackbar(message: string, isError: boolean): void {
     const config: MatSnackBarConfig = {
-      duration: 3000,
+      duration: 2000,
       panelClass: isError ? ['error-snackbar'] : ['ok-snackbar'],
       verticalPosition: 'top'
     };
