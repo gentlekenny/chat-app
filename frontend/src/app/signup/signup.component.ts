@@ -25,6 +25,7 @@ export class SignupComponent implements OnInit {
   register() {
     const url = `${environment.serverHost}/register`
 
+
     // Making post request to register user
     this.http.post<SignupResponse>(url, { username: this.username, password: this.password }).subscribe(
       response => {
@@ -34,7 +35,7 @@ export class SignupComponent implements OnInit {
           this.username = ""
           this.password = ""
         } else {
-          this.snackbar.showSnackbar(`Error ${response.statusCode} : ${response.errorMessage}`, false)
+          this.snackbar.showSnackbar(`Successfuly registered new user! Redirecting to login page..`, false)
           this.username = ""
           this.password = ""
           setTimeout(() => {

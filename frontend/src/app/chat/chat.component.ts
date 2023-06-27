@@ -5,6 +5,7 @@ import { Socket } from 'ngx-socket-io';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../services/snackbar.service';
 import { environment } from 'src/environments/environment';
+import { getHeaders } from '../services/auth.service';
 
 
 @Component({
@@ -35,13 +36,8 @@ export class ChatComponent implements OnInit {
 
     const url = `${environment.serverHost}/chatrooms`;
 
-    // Make the HTTP POST request
-
-    // Retrieve access token from sessionStorage
-    const accessToken = sessionStorage.getItem('token');
-
-    // Include access token in the request headers
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+    // Utility method to get headers
+    const headers = getHeaders()
 
     this.http.get<Chatroom[]>(url, { headers }).subscribe(
       response => {
@@ -58,11 +54,10 @@ export class ChatComponent implements OnInit {
   // Method for handling chatroom selection
   selectChatroom(chatroom: Chatroom) {
     this.selectedChatroom = chatroom
-    // Retrieve access token from sessionStorage
-    const accessToken = sessionStorage.getItem('token');
 
-    // Include access token in the request headers
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+    // Utility method to get headers
+    const headers = getHeaders()
+
     this.http.get<string[]>(`${environment.serverHost}/recent/${this.selectedChatroom._id}`, { headers }).subscribe(
       response => {
         this.didErrorOccur(response)
@@ -134,11 +129,9 @@ export class ChatComponent implements OnInit {
 
     this.socket.on("refresh-chatrooms", (interactingUser: string) => {
       const url = `${environment.serverHost}/chatrooms`;
-      // Retrieve access token from sessionStorage
-      const accessToken = sessionStorage.getItem('token');
 
-      // Include access token in the request headers
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+      // Utility method to get headers
+      const headers = getHeaders()
 
       this.http.get<Chatroom[]>(url, { headers }).subscribe(
         response => {
