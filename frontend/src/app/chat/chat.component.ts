@@ -24,6 +24,8 @@ export class ChatComponent implements OnInit {
     users: [],
   }
   displayJoinCreateChatroom: boolean = false
+  firstMessageTimestamp: number = -1
+  numberOfMessages: number = 0
 
   constructor(private http: HttpClient, public socket: Socket, private router: Router) { }
 
@@ -78,7 +80,7 @@ export class ChatComponent implements OnInit {
       // We need to handle memory usage
       // Arrays can be deadly for this issue, so in case we get to see 100 messages, we are just gonna delete first 20
       if (this.visibleMessages.length == 100) this.visibleMessages = this.visibleMessages.slice(20)
-      this.visibleMessages.push(`${this.user}: ${this.message}`)
+      if (!this.checkMessageRateLimit()) this.visibleMessages.push(`${this.user}: ${this.message}`)
       this.message = ""
     }
   }
@@ -156,4 +158,27 @@ export class ChatComponent implements OnInit {
       this.router.navigate(["/login"])
     }
   }
+  checkMessageRateLimit(): boolean {
+    const currentTime = Date.now();
+
+    if (this.firstMessageTimestamp === -1) {
+      this.firstMessageTimestamp = currentTime;
+      this.numberOfMessages++;
+      return false;
+    }
+
+    if (currentTime > this.firstMessageTimestamp + 60000) {
+      this.firstMessageTimestamp = -1;
+      this.numberOfMessages = 1;
+      return false;
+    }
+
+    if (this.numberOfMessages > 9) {
+      return true;
+    }
+
+    this.numberOfMessages++;
+    return false;
+  }
+
 }
