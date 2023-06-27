@@ -11,8 +11,9 @@ import { SignupComponent } from './signup/signup.component';
 import { ChatComponent } from './chat/chat.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { JoinCreateChatroomComponent } from './join-create-chatroom/join-create-chatroom.component';
+import { environment } from 'src/environments/environment';
 
-const config: SocketIoConfig = { url: 'http://localhost:8000', options: {} }
+const config: SocketIoConfig = { url: environment.serverHost, options: {} }
 
 @NgModule({
   declarations: [

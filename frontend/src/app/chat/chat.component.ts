@@ -4,6 +4,7 @@ import { Chatroom } from './chat.interface';
 import { Socket } from 'ngx-socket-io';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../services/snackbar.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -32,7 +33,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const url = 'http://localhost:8000/chatrooms';
+    const url = `${environment.serverHost}/chatrooms`;
 
     // Make the HTTP POST request
 
@@ -62,7 +63,7 @@ export class ChatComponent implements OnInit {
 
     // Include access token in the request headers
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-    this.http.get<string[]>(`http://localhost:8000/recent/${this.selectedChatroom._id}`, { headers }).subscribe(
+    this.http.get<string[]>(`${environment.serverHost}/recent/${this.selectedChatroom._id}`, { headers }).subscribe(
       response => {
         this.didErrorOccur(response)
         this.visibleMessages = response
@@ -132,7 +133,7 @@ export class ChatComponent implements OnInit {
     })
 
     this.socket.on("refresh-chatrooms", (interactingUser: string) => {
-      const url = 'http://localhost:8000/chatrooms';
+      const url = `${environment.serverHost}/chatrooms`;
       // Retrieve access token from sessionStorage
       const accessToken = sessionStorage.getItem('token');
 

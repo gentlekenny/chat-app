@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SignupResponse } from './signup.interface';
 import { SnackbarService } from '../services/snackbar.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-signup',
@@ -22,8 +23,7 @@ export class SignupComponent implements OnInit {
   }
 
   register() {
-    const url = 'http://localhost:8000/register';
-
+    const url = `${environment.serverHost}/register`
 
     // Making post request to register user
     this.http.post<SignupResponse>(url, { username: this.username, password: this.password }).subscribe(
