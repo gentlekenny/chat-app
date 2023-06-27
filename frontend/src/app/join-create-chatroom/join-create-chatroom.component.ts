@@ -14,11 +14,12 @@ export class JoinCreateChatroomComponent {
   @Input() public user: string = ""
   @Input() public socket: Socket | null = null
 
+  chatroomName: string = ""
+
   constructor(private snackbar: SnackbarService) {
 
   }
 
-  chatroomName: string = ""
 
   joinChatroomOnClick() {
     if (this.chatroomName.length <= 4 || this.chatroomName.indexOf(' ') > 0) {

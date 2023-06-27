@@ -33,7 +33,6 @@ export class ChatComponent implements OnInit {
   constructor(private http: HttpClient, public socket: Socket, private router: Router, private snackbar: SnackbarService) { }
 
   ngOnInit(): void {
-
     const url = `${environment.serverHost}/chatrooms`;
 
     // Utility method to get headers
@@ -108,7 +107,6 @@ export class ChatComponent implements OnInit {
   }
 
   socketHandling() {
-
     this.socket.on("chat-message", (message: string) => {
       this.visibleMessages.push(message)
     })

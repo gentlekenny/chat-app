@@ -4,6 +4,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { LoginResponse } from './login.interface';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../services/snackbar.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -20,14 +21,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
   login() {
-    const url = 'http://localhost:8000/login';
-
-    // Snackbar config
-    const config: MatSnackBarConfig = {
-      duration: 2000, // Adjust the duration in milliseconds (e.g., 5000 = 5 seconds)
-      panelClass: ['error-snackbar'],
-      verticalPosition: 'top' // Apply custom CSS class for styling
-    };
+    const url = `${environment.serverHost}/login`
 
     // Make the HTTP POST request
     this.http.post<LoginResponse>(url, { username: this.username, password: this.password }).subscribe(
