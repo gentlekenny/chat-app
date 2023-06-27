@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { LoginResponse } from './login.interface';
 import { Router } from '@angular/router';
+import { SnackbarService } from '../services/snackbar.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit {
 
   username!: string
   password!: string
-  constructor(private http: HttpClient, private snackbar: MatSnackBar, private router: Router) {
+  constructor(private http: HttpClient, private snackbar: SnackbarService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -33,13 +34,11 @@ export class LoginComponent implements OnInit {
       response => {
         // Handle the response as needed
         if (response.errorMessage) {
-          this.snackbar.open(`Error ${response.statusCode} : ${response.errorMessage}`, '', config);
+          this.snackbar.showSnackbar(`Error ${response.statusCode} : ${response.errorMessage}`, true)
           this.username = ""
           this.password = ""
         } else {
-          this.snackbar.open(`Successfuly logged in! Redirecting...`, '', {
-            ...config, panelClass: ['ok-snackbar']
-          });
+          this.snackbar.showSnackbar(`Successfuly logged in! Redirecting...`, false)
           sessionStorage.setItem('token', response.accessToken);
           sessionStorage.setItem('user', response.username)
           setTimeout(() => {

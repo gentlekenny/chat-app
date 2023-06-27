@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Chatroom } from './chat.interface';
 import { Socket } from 'ngx-socket-io';
 import { Router } from '@angular/router';
+import { SnackbarService } from '../services/snackbar.service';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class ChatComponent implements OnInit {
   firstMessageTimestamp: number = -1
   numberOfMessages: number = 0
 
-  constructor(private http: HttpClient, public socket: Socket, private router: Router) { }
+  constructor(private http: HttpClient, public socket: Socket, private router: Router, private snackbar: SnackbarService) { }
 
   ngOnInit(): void {
 
@@ -80,7 +81,11 @@ export class ChatComponent implements OnInit {
       // We need to handle memory usage
       // Arrays can be deadly for this issue, so in case we get to see 100 messages, we are just gonna delete first 20
       if (this.visibleMessages.length == 100) this.visibleMessages = this.visibleMessages.slice(20)
-      if (!this.checkMessageRateLimit()) this.visibleMessages.push(`${this.user}: ${this.message}`)
+      if (this.checkMessageRateLimit()) {
+        this.snackbar.showSnackbar(`Error: You sent too many messages in the last 60 seconds.`, true)
+        return
+      }
+      this.visibleMessages.push(`${this.user}: ${this.message}`)
       this.message = ""
     }
   }

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { SnackbarService } from '../services/snackbar.service';
 
 
 @Component({
@@ -14,7 +14,7 @@ export class JoinCreateChatroomComponent {
   @Input() public user: string = ""
   @Input() public socket: Socket | null = null
 
-  constructor(private snackbar: MatSnackBar) {
+  constructor(private snackbar: SnackbarService) {
 
   }
 
@@ -22,7 +22,7 @@ export class JoinCreateChatroomComponent {
 
   joinChatroomOnClick() {
     if (this.chatroomName.length <= 4 || this.chatroomName.indexOf(' ') > 0) {
-      this.showSnackbar(true)
+      this.snackbar.showSnackbar(`Error: Chatroom name must be 5-20 characters long and must not contain whitespaces.`, true)
       return
     }
     const chatroom = {
@@ -32,21 +32,6 @@ export class JoinCreateChatroomComponent {
     }
     this.socket?.emit("chatroom-created", (chatroom))
     this.chatroomName = ''
-    this.showSnackbar(false)
-  }
-
-  showSnackbar(isError: boolean) {
-    const config: MatSnackBarConfig = {
-      duration: 3000, // Duration of info window
-      panelClass: ['error-snackbar'], // Using this winow style
-      verticalPosition: 'top'
-    };
-    if (isError) {
-      this.snackbar.open(`Error: Chatroom name must be 5-20 characters long and must not contain whitespaces.`, '', config);
-    } else {
-      config.panelClass = ['ok-snackbar']
-      this.snackbar.open(`Success. New chatroom has been added to My Chatrooms list.`, '', config);
-    }
-    this.chatroomName = ''
+    this.snackbar.showSnackbar(`Success. New chatroom has been added to My Chatrooms list.`, false)
   }
 }
