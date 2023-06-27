@@ -1,26 +1,61 @@
 # Real-Time Chat App
 
+Application is up and running [here.](https://chatapp-frontend-9ec9c03ceef6.herokuapp.com)
+
+## Application structure
+
+Application project consists of two folders : **frontend** and **backend**. As their names suggest, they present visual stuff for the application and logic, respectively. Each of those projects are independent, on their own. That means that, if you change environment variables on the frontend to a diffrent server host, frontend is still going to work.  I really like this folder structure because one project is split to it's pieces, and yet still together on one git repository.
+
+### Technologies used:
+Node.js, Express.js, Socket.IO , Redis , JWT, Heroku and Angular.
+
+
 ## How to run?
 
+
+### Default method:
+
 - Clone the respoistory
+
+#### Set up backend
+
+- Navigate to backend folder via terminal
 - Create .env file in **backend** folder
-- Create environment.ts file in **frontnend** folder
-- Set appropriate env variables using examplery env files
-
-- If you have docker installed, from the **root** folder,run:
+- Set appropriate env variables using examplery env file
+- Run 
 ```
-    docker-compouse-up
+npm install
 ```
-And go visit [localhost:4200](http://localhost:4200), the application will be running
-
-- If you don't have Docker installed, you have to run projects separately:
-- Go to **backend** folder, and run this command:
+- After that run
 ```
 ts-node index.ts
 ```
-- Now, go to **frontend** folder, and run this command:
+- Your server should be running now
+
+#### Set up frontend
+
+- Navigate to frontend folder via terminal
+- Run 
 ```
-ng-serve
+npm install
+```
+**Optional:** Run 
+```
+ng build
+```
+- Run
+```
+ng serve 
+```
+- Visit [localhost:4200](http://localhost:4200). Your application is running
+
+### Docker method 
+- Clone the repository
+- Position in ***chat-app*** folder, and run
+```
+    docker-compouse-up
 ```
 
-And go visit [localhost:4200](http://localhost:4200), the application will be running
+
+## Credits
+Kenan Omić
